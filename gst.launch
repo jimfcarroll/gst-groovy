@@ -1,0 +1,16 @@
+
+pipe = bin {
+    rtsp args[1]
+    delayed 'decodebin'
+    make 'videoconvert'
+    caps 'video/x-raw,format=BGR'
+    
+    display 'title'
+    
+    make 'queue'
+    make 'videoconvert'
+    make 'x264enc'
+    make 'mp4mux'
+    make 'filesink' with "location", args[2]
+}.play()
+

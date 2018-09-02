@@ -1,0 +1,241 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <parent>
+    <groupId>ai.kognition</groupId>
+    <artifactId>parent-pom</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath />
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>kognition.ai</groupId>
+  <artifactId>gst-groovy</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  
+  <properties>
+    <kogbom.version>1.0-SNAPSHOT</kogbom.version>
+    <groovy.compiler.version>2.9.2-01</groovy.compiler.version>
+    <groovy.version>2.5.1</groovy.version>
+    <groovy.batch.version>${groovy.version}-02</groovy.batch.version>
+  </properties>
+  
+  <!-- This is needed when not using the Nexus proxy which has this setup already -->
+  <pluginRepositories>
+    <pluginRepository>
+      <id>bintray</id>
+      <name>Groovy Bintray</name>
+      <url>https://dl.bintray.com/groovy/maven</url>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+  
+  <dependencyManagement>
+    <dependencies>
+      <!-- Kognition BOM -->
+      <dependency>
+        <groupId>ai.kognition</groupId>
+        <artifactId>kognition-bom</artifactId>
+        <version>${kogbom.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy-all</artifactId>
+        <version>2.5.1</version>
+        <type>pom</type>
+      </dependency>
+      <dependency>
+        <groupId>ai.kognition</groupId>
+        <artifactId>kognition-commons</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>ai.kognition</groupId>
+        <artifactId>video-feed-service</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>ai.kognition</groupId>
+        <artifactId>camera-impl-properties</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+  
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <type>pom</type>
+    </dependency>
+
+    <dependency>
+      <groupId>com.jiminger</groupId>
+      <artifactId>lib-gstreamer</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>ai.kognition</groupId>
+      <artifactId>kognition-commons</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>ai.kognition</groupId>
+      <artifactId>video-feed-service</artifactId>
+    </dependency>
+
+    <dependency> <!-- Used in VarSubPropReader in the config stuff -->
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency> <!-- Used in VarSubPropReader in the config stuff -->
+      <groupId>net.dempsy</groupId>
+      <artifactId>dempsy-distconfig.apachevfs</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency> <!-- Used in VarSubPropReader in the config stuff -->
+      <groupId>net.dempsy</groupId>
+      <artifactId>dempsy-distconfig.classpath</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency> <!-- Used in VarSubPropReader in the config stuff -->
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>ai.kognition</groupId>
+      <artifactId>camera-impl-properties</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+    
+      <!-- Either the following section or the one beyond it should be used    -->
+      <!-- but not both. In the case that there are no source java directories -->
+      <!-- build-helper-maven-plugin should be used, otherwise the groovy      -->
+      <!-- compiler with the extensions set to true will pull all of the       -->
+      <!-- sources together correctly.                                         -->
+
+      <!-- <plugin> -->
+      <!--   <groupId>org.codehaus.groovy</groupId> -->
+      <!--   <artifactId>groovy-eclipse-compiler</artifactId> -->
+      <!--   <version>${groovy.compiler.version}</version> -->
+      <!--   <extensions>true</extensions> -->
+      <!-- </plugin> -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/main/groovy</source>
+              </sources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-test-source</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/test/groovy</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.7.0</version>
+        <configuration>
+          <compilerId>groovy-eclipse-compiler</compilerId>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-eclipse-compiler</artifactId>
+            <version>${groovy.compiler.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-eclipse-batch</artifactId>
+            <version>${groovy.batch.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <configuration>
+          <shadedArtifactAttached>true</shadedArtifactAttached>
+          <shadedClassifierName>bin</shadedClassifierName>
+          <createDependencyReducedPom>false</createDependencyReducedPom>
+          <filters>
+            <filter>
+              <artifact>*:*</artifact>
+              <excludes>
+                <exclude>META-INF/*.SF</exclude>
+                <exclude>META-INF/*.DSA</exclude>
+                <exclude>META-INF/*.RSA</exclude>
+              </excludes>
+            </filter>
+          </filters>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <!-- This AppendingTransformer is required so spark will work and not throw "akka.version missing" errors. -->
+                <!-- See http://stackoverflow.com/a/31011315 -->
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                  <resource>reference.conf</resource>
+                </transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                  <resource>META-INF/spring.handlers</resource>
+                </transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                  <resource>META-INF/spring.schemas</resource>
+                </transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>gst</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

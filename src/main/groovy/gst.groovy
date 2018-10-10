@@ -1,11 +1,10 @@
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.freedesktop.gstreamer.Gst
 
-import com.jiminger.gstreamer.*
-import com.jiminger.gstreamer.util.*
-import com.jiminger.gstreamer.guard.GstScope
-
 import ai.kognition.config.SpringContextLoader
+import ai.kognition.pilecv4j.gstreamer.*
+import ai.kognition.pilecv4j.gstreamer.guard.GstScope
+import ai.kognition.pilecv4j.gstreamer.util.*
 import ai.kognition.video.controller.service.VideoFeedService
 
 def usage() {

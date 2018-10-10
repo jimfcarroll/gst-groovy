@@ -71,7 +71,7 @@
     </dependency>
 
     <dependency>
-      <groupId>com.jiminger</groupId>
+      <groupId>ai.kognition.pilecv4j</groupId>
       <artifactId>lib-gstreamer</artifactId>
     </dependency>
 

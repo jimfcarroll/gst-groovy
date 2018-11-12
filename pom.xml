@@ -168,6 +168,9 @@
         <version>3.7.0</version>
         <configuration>
           <compilerId>groovy-eclipse-compiler</compilerId>
+          <source>1.8</source>
+          <target>1.8</target>
+          <debug>true</debug>
         </configuration>
         <dependencies>
           <dependency>

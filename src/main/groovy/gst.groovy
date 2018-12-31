@@ -49,10 +49,7 @@ class MainScript {
 }
 
 new GstScope(this.class.name, args).withCloseable( { scope ->
-   SpringContextLoader.load([
-      "spring/property-wiring.xml",
-      "spring/kogvfs.xml"
-   ] as String[], ["spring/main.xml"] as String[]).withCloseable( { ctx ->
+   SpringContextLoader.load(["spring/property-wiring.xml"] as String[], ["spring/main.xml"] as String[]).withCloseable( { ctx ->
       videoFeedService = ctx.getBean(VideoFeedService.class);
 
       // if (args.length != 1) usage()

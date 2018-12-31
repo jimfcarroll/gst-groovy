@@ -7,12 +7,7 @@
 
   <context:property-placeholder system-properties-mode="OVERRIDE" />  
 
-  <bean class="ai.kognition.config.VariableSubstituterPropertiesReader">
-    <constructor-arg ref="KogVfs" />
-    <constructor-arg>
-      <array>
-        <value>${variables.file:classpath:///video-service-stubbed-config.properties}</value>
-      </array>
-    </constructor-arg>
-  </bean>
+  <import resource="kogvfs.xml" />
+
+  <bean class="ai.kognition.config.VariableSubstituterPropertiesReader" autowire="constructor" />
 </beans>
